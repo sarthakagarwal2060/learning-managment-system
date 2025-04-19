@@ -1,0 +1,112 @@
+export const coursesData = [
+  {
+    id: 1,
+    title: "Web Development Fundamentals",
+    instructor: "John Smith",
+    level: "Beginner",
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Learn the basics of web development, including HTML, CSS, and JavaScript. Build responsive websites and understand key programming concepts.",
+    duration: "8 weeks",
+    lessons: [
+      { id: 1, title: "Introduction to HTML", completed: false },
+      { id: 2, title: "CSS Styling", completed: false },
+      { id: 3, title: "JavaScript Basics", completed: false },
+      { id: 4, title: "DOM Manipulation", completed: false },
+      { id: 5, title: "Responsive Design", completed: false },
+    ],
+    topics: ["HTML", "CSS", "JavaScript", "Responsive Design"]
+  },
+  {
+    id: 2,
+    title: "React JS Masterclass",
+    instructor: "Emily Chen",
+    level: "Intermediate",
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Master React.js from the ground up. Learn hooks, context API, and best practices to build modern, interactive web applications.",
+    duration: "10 weeks",
+    lessons: [
+      { id: 1, title: "React Fundamentals", completed: false },
+      { id: 2, title: "Components & Props", completed: false },
+      { id: 3, title: "State Management", completed: false },
+      { id: 4, title: "Hooks in Depth", completed: false },
+      { id: 5, title: "Context API", completed: false },
+      { id: 6, title: "React Router", completed: false },
+    ],
+    topics: ["React", "Hooks", "Context API", "State Management"]
+  },
+  {
+    id: 3,
+    title: "Advanced Data Science",
+    instructor: "Michael Johnson",
+    level: "Advanced",
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Dive into advanced data science topics including machine learning algorithms, data visualization, and predictive modeling.",
+    duration: "12 weeks",
+    lessons: [
+      { id: 1, title: "Statistical Analysis", completed: false },
+      { id: 2, title: "Machine Learning Basics", completed: false },
+      { id: 3, title: "Neural Networks", completed: false },
+      { id: 4, title: "Data Visualization", completed: false },
+      { id: 5, title: "Predictive Modeling", completed: false },
+    ],
+    topics: ["Python", "Machine Learning", "Data Visualization", "Statistics"]
+  },
+  {
+    id: 4,
+    title: "Mobile App Development with Flutter",
+    instructor: "Sarah Williams",
+    level: "Intermediate",
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Build cross-platform mobile applications using Flutter and Dart. Create beautiful UIs and deploy to iOS and Android.",
+    duration: "9 weeks",
+    lessons: [
+      { id: 1, title: "Dart Programming", completed: false },
+      { id: 2, title: "Flutter Basics", completed: false },
+      { id: 3, title: "UI Components", completed: false },
+      { id: 4, title: "State Management", completed: false },
+      { id: 5, title: "Navigation & Routing", completed: false },
+      { id: 6, title: "API Integration", completed: false },
+    ],
+    topics: ["Flutter", "Dart", "Mobile Development", "UI Design"]
+  },
+  {
+    id: 5,
+    title: "UX/UI Design Principles",
+    instructor: "Alex Turner",
+    level: "Beginner",
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Learn the principles of effective user experience and interface design. Create wireframes, prototypes, and user-centered designs.",
+    duration: "6 weeks",
+    lessons: [
+      { id: 1, title: "Design Thinking", completed: false },
+      { id: 2, title: "User Research", completed: false },
+      { id: 3, title: "Wireframing", completed: false },
+      { id: 4, title: "Prototyping", completed: false },
+      { id: 5, title: "Usability Testing", completed: false },
+    ],
+    topics: ["UX Design", "UI Design", "Wireframing", "Prototyping"]
+  },
+  {
+    id: 6,
+    title: "Cybersecurity Fundamentals",
+    instructor: "Robert Miller",
+    level: "Intermediate",
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1563163443385-2734ba21f6bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    description: "Learn the basics of cybersecurity, including network security, encryption, and threat detection. Protect systems from common attacks.",
+    duration: "8 weeks",
+    lessons: [
+      { id: 1, title: "Security Fundamentals", completed: false },
+      { id: 2, title: "Network Security", completed: false },
+      { id: 3, title: "Encryption Methods", completed: false },
+      { id: 4, title: "Threat Detection", completed: false },
+      { id: 5, title: "Security Protocols", completed: false },
+    ],
+    topics: ["Cybersecurity", "Network Security", "Encryption", "Threat Detection"]
+  }
+]; 
