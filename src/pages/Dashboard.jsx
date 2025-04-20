@@ -9,16 +9,13 @@ const Dashboard = () => {
   
   useEffect(() => {
     if (user && user.enrolledCourses && courses.length > 0) {
-      // Get all enrolled courses
       const userCourses = courses.filter(course => 
         user.enrolledCourses.includes(course.id)
       );
       
-      // Merge course data with user progress
+  
       const coursesWithProgress = userCourses.map(course => {
         let lessonData = course.lessons;
-        
-        // If user has progress data for this course, use it
         if (user.progress && user.progress[course.id]) {
           lessonData = user.progress[course.id];
         }
@@ -33,12 +30,12 @@ const Dashboard = () => {
     }
   }, [user, courses]);
   
-  // If not logged in, redirect to home
+
   if (!user) {
     return <Navigate to="/" />;
   }
   
-  // Calculate overall progress across all courses
+
   const calculateOverallProgress = () => {
     if (enrolledCourses.length === 0) return 0;
     
@@ -60,7 +57,7 @@ const Dashboard = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
-        {/* User Header */}
+
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
@@ -88,7 +85,7 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Dashboard Tabs */}
+
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="border-b">
             <nav className="flex">
@@ -125,7 +122,7 @@ const Dashboard = () => {
             </nav>
           </div>
           
-          {/* Tab Content */}
+
           <div className="p-6">
             {activeTab === 'my-courses' && (
               <div>
@@ -134,7 +131,7 @@ const Dashboard = () => {
                 {enrolledCourses.length > 0 ? (
                   <div className="space-y-6">
                     {enrolledCourses.map(course => {
-                      // Calculate course progress
+
                       const completedLessons = course.lessons.filter(l => l.completed).length;
                       const totalLessons = course.lessons.length;
                       const progress = Math.round((completedLessons / totalLessons) * 100);
@@ -265,7 +262,6 @@ const Dashboard = () => {
                 {enrolledCourses.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {enrolledCourses.map(course => {
-                      // Only show certificates for courses with 100% progress
                       const completedLessons = course.lessons.filter(l => l.completed).length;
                       const totalLessons = course.lessons.length;
                       const isCompleted = completedLessons === totalLessons && totalLessons > 0;

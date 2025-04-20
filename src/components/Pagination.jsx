@@ -3,63 +3,62 @@ import React, { useState, useEffect } from 'react';
 const Pagination = ({ currentPage, totalPages, onPageChange, isLoading }) => {
   const [loadingPage, setLoadingPage] = useState(null);
 
-  // Clear loading state when current page changes
+
   useEffect(() => {
     setLoadingPage(null);
   }, [currentPage]);
 
-  // Handle page click with loading state
+
   const handlePageClick = (pageNumber) => {
     if (typeof pageNumber === 'number' && pageNumber !== currentPage) {
       setLoadingPage(pageNumber);
-      // Simulate loading delay (remove this in production and replace with actual data fetching)
+
       setTimeout(() => {
         onPageChange(pageNumber);
       }, 300);
     }
   };
 
-  // Generate page numbers
+
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxPagesToShow = 10; // Increased to show up to 10 page numbers
+    const maxPagesToShow = 10; 
     
     if (totalPages <= maxPagesToShow) {
-      // Show all pages if total is less than max
+
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Always show first page
+
       pageNumbers.push(1);
       
-      // Calculate start and end of page range
-      let startPage = Math.max(2, currentPage - 4); // Show more pages before current
-      let endPage = Math.min(totalPages - 1, currentPage + 4); // Show more pages after current
+
+      let startPage = Math.max(2, currentPage - 4); 
+      let endPage = Math.min(totalPages - 1, currentPage + 4); 
       
-      // Adjust if at start or end to always show maximum pages
+
       if (currentPage <= 5) {
         endPage = Math.min(totalPages - 1, 9); 
       } else if (currentPage >= totalPages - 4) {
         startPage = Math.max(2, totalPages - 8);
       }
       
-      // Add ellipsis after first page if needed
+
       if (startPage > 2) {
         pageNumbers.push('...');
       }
       
-      // Add middle pages
+ 
       for (let i = startPage; i <= endPage; i++) {
         pageNumbers.push(i);
       }
       
-      // Add ellipsis before last page if needed
+
       if (endPage < totalPages - 1) {
         pageNumbers.push('...');
       }
       
-      // Always show last page
       pageNumbers.push(totalPages);
     }
     
@@ -68,7 +67,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, isLoading }) => {
   
   return (
     <div className="flex flex-wrap items-center justify-center space-x-2 my-8">
-      {/* Previous Button */}
+
       <button
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1 || isLoading || loadingPage !== null}
@@ -83,7 +82,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, isLoading }) => {
         </svg>
       </button>
       
-      {/* Page Numbers */}
+
       <div className="flex flex-wrap justify-center">
         {getPageNumbers().map((page, index) => (
           <button
@@ -111,7 +110,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, isLoading }) => {
         ))}
       </div>
       
-      {/* Next Button */}
+
       <button
         onClick={() => handlePageClick(currentPage + 1)}
         disabled={currentPage === totalPages || isLoading || loadingPage !== null}

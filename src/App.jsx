@@ -11,11 +11,9 @@ import NotFound from './pages/NotFound';
 import { getCoursesWithFallback } from './services/api';
 import { coursesData } from './data/coursesData';
 
-// Create Context for global state management
 export const AppContext = createContext();
 
 function App() {
-  // Global state for courses and user
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +22,6 @@ function App() {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // Load courses on initial render
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -34,7 +31,6 @@ function App() {
       } catch (err) {
         console.error('Error fetching courses:', err);
         setError('Failed to load courses. Using fallback data.');
-        // Use fallback data if API fetch fails
         setCourses(coursesData);
       } finally {
         setLoading(false);

@@ -21,7 +21,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted (demo):', formData);
-    // In a real app, you would send this data to a server
     setFormSubmitted(true);
     setFormData({
       name: '',
@@ -36,7 +35,6 @@ const Contact = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Contact Us</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Contact Information */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Get In Touch</h2>
@@ -104,7 +102,6 @@ const Contact = () => {
           </div>
         </div>
         
-        {/* Contact Form */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h2>
@@ -213,7 +210,6 @@ const Contact = () => {
         </div>
       </div>
       
-      {/* Map Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Find Us</h2>
         <div className="bg-gray-100 h-80 rounded-lg flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300">
