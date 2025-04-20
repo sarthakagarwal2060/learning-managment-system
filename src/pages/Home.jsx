@@ -307,6 +307,12 @@ const Home = () => {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">Student Testimonials</h2>
             <p className="text-gray-600">See what our students have to say about their learning experiences</p>
+            <div className="mt-2 inline-flex items-center text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Sample testimonials for demonstration purposes
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -368,6 +374,7 @@ const TestimonialCard = ({ quote, name, title, image }) => (
         </svg>
       ))}
     </div>
+    <div className="mt-3 text-xs text-center text-gray-400 italic">Sample testimonial</div>
   </div>
 );
 

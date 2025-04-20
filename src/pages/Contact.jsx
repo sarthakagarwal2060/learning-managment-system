@@ -20,7 +20,7 @@ const Contact = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    console.log('Form submitted (demo):', formData);
     // In a real app, you would send this data to a server
     setFormSubmitted(true);
     setFormData({
@@ -110,18 +110,24 @@ const Contact = () => {
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Send Us a Message</h2>
             
             {formSubmitted ? (
-              <div className="bg-green-100 text-green-700 p-4 rounded-lg mb-6">
-                <div className="flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  <span className="font-medium">Thank you for your message!</span>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex-shrink-0 bg-green-100 rounded-full p-2">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <span className="ml-3 font-medium text-green-800">Demo Form Submission Successful</span>
                 </div>
-                <p className="mt-2">We've received your inquiry and will get back to you shortly.</p>
+                <p className="text-green-700 mb-3">Thank you for your message! In this demo application, your data has been logged to the console but not sent to any server.</p>
+                <p className="text-green-600 text-sm mb-4">In a production environment, this form would be connected to a backend service to process your inquiry.</p>
                 <button 
                   onClick={() => setFormSubmitted(false)}
-                  className="mt-4 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
+                  <svg className="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                  </svg>
                   Send Another Message
                 </button>
               </div>
@@ -210,8 +216,13 @@ const Contact = () => {
       {/* Map Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mt-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Find Us</h2>
-        <div className="bg-gray-200 h-80 rounded-lg flex items-center justify-center">
-          <p className="text-gray-500">Map integration would go here in a real application</p>
+        <div className="bg-gray-100 h-80 rounded-lg flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300">
+          <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <p className="text-gray-500 text-center mb-2 font-medium">Map Feature Unavailable in Demo</p>
+          <p className="text-gray-400 text-center text-sm max-w-md">This is a demo application. In a production environment, this would display an interactive map showing our location at 123 Education St, Learning City.</p>
         </div>
       </div>
     </div>

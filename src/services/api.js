@@ -125,21 +125,52 @@ const getRandomLevel = () => {
 
 export const getCoursesWithFallback = async (mockData) => {
   try {
+    // Try the primary API first (Open Library)
+    console.log('Attempting to fetch data from Open Library API...');
     const openLibraryCourses = await fetchCourses();
-    if (openLibraryCourses.length > 0) {
-      return openLibraryCourses;
+    if (openLibraryCourses && openLibraryCourses.length > 0) {
+      console.log('Successfully fetched data from Open Library API.');
+      return {
+        source: 'openlibrary',
+        data: openLibraryCourses
+      };
     }
     
-    console.log('Open Library API failed, trying JSONPlaceholder...');
+    // If primary API fails, try the secondary API (JSONPlaceholder)
+    console.log('Open Library API failed, trying JSONPlaceholder API...');
     const jsonPlaceholderCourses = await fetchFromJSONPlaceholder();
-    if (jsonPlaceholderCourses.length > 0) {
-      return jsonPlaceholderCourses;
+    if (jsonPlaceholderCourses && jsonPlaceholderCourses.length > 0) {
+      console.log('Successfully fetched data from JSONPlaceholder API.');
+      return {
+        source: 'jsonplaceholder',
+        data: jsonPlaceholderCourses
+      };
     }
     
+    // If both APIs fail, use mock data
     console.log('All APIs failed, using mock data...');
-    return mockData;
+    if (!mockData || mockData.length === 0) {
+      throw new Error('No mock data provided');
+    }
+    return {
+      source: 'mockdata',
+      data: mockData,
+      isDemo: true
+    };
   } catch (error) {
     console.error('Error in API fallback chain:', error);
-    return mockData;
+    if (!mockData || mockData.length === 0) {
+      return {
+        source: 'error',
+        data: [],
+        isDemo: true,
+        error: error.message
+      };
+    }
+    return {
+      source: 'mockdata',
+      data: mockData,
+      isDemo: true
+    };
   }
 };

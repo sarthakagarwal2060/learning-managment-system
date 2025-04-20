@@ -63,38 +63,38 @@ const About = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
             <img 
-              src="https://randomuser.me/api/portraits/men/32.jpg" 
+              src="https://ui-avatars.com/api/?name=Sarthak+Agarwal&background=0D8ABC&color=fff" 
               alt="CEO" 
               className="w-32 h-32 rounded-full mx-auto mb-4"
             />
-            <h3 className="text-xl font-medium text-gray-800">John Smith</h3>
+            <h3 className="text-xl font-medium text-gray-800">Sarthak Agarwal</h3>
             <p className="text-blue-600 mb-2">CEO & Founder</p>
             <p className="text-gray-600 text-sm">
-              Former education director with 15+ years of experience in EdTech
+              Education enthusiast with expertise in creating immersive learning experiences
             </p>
           </div>
           <div className="text-center">
             <img 
-              src="https://randomuser.me/api/portraits/women/44.jpg" 
+              src="https://ui-avatars.com/api/?name=Sarthak+A&background=4F9E69&color=fff" 
               alt="Head of Content" 
               className="w-32 h-32 rounded-full mx-auto mb-4"
             />
-            <h3 className="text-xl font-medium text-gray-800">Sarah Johnson</h3>
+            <h3 className="text-xl font-medium text-gray-800">Sarthak A.</h3>
             <p className="text-blue-600 mb-2">Head of Content</p>
             <p className="text-gray-600 text-sm">
-              Curriculum development specialist with background in computer science
+              Curriculum designer focused on creating engaging educational content
             </p>
           </div>
           <div className="text-center">
             <img 
-              src="https://randomuser.me/api/portraits/men/68.jpg" 
+              src="https://ui-avatars.com/api/?name=S+Agarwal&background=B85C3C&color=fff" 
               alt="CTO" 
               className="w-32 h-32 rounded-full mx-auto mb-4"
             />
-            <h3 className="text-xl font-medium text-gray-800">David Chen</h3>
+            <h3 className="text-xl font-medium text-gray-800">S. Agarwal</h3>
             <p className="text-blue-600 mb-2">CTO</p>
             <p className="text-gray-600 text-sm">
-              Tech leader with expertise in building scalable learning platforms
+              Tech innovator specializing in educational platforms and learning systems
             </p>
           </div>
         </div>

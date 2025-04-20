@@ -240,12 +240,21 @@ const Navbar = () => {
                 type="submit"
                 className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                Log In
+                Demo Login
               </button>
               
-              <p className="text-center text-gray-600 text-sm mt-4">
-                This is a demo app. No real authentication is implemented.
-              </p>
+              <div className="text-center bg-yellow-50 border border-yellow-100 rounded-lg p-3 mt-4">
+                <div className="flex items-center justify-center mb-1">
+                  <svg className="w-5 h-5 text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span className="font-medium text-sm text-yellow-700">Demo Authentication</span>
+                </div>
+                <p className="text-gray-600 text-xs">
+                  This is a demo app with client-side authentication only. 
+                  No real backend or data persistence is implemented.
+                </p>
+              </div>
             </form>
           </div>
         </div>
