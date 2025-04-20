@@ -6,7 +6,8 @@ import { coursesData } from '../data/coursesData';
 import { getCoursesWithFallback } from '../services/api';
 
 const Home = () => {
-  const { setCourses, courses, loading } = useContext(AppContext);
+  const { setCourses, courses } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const cardsPerSlide = 3;
@@ -18,10 +19,17 @@ const Home = () => {
       try {
         const data = await getCoursesWithFallback(coursesData);
         
-        setCourses(data);
-        
-        const sorted = [...data].sort((a, b) => b.rating - a.rating);
-        setFeaturedCourses(sorted.slice(0, 6));
+        if (data && data.source && Array.isArray(data.data)) {
+          setCourses(data.data);
+          const sorted = [...data.data].sort((a, b) => b.rating - a.rating);
+          setFeaturedCourses(sorted.slice(0, 6));
+        } else if (Array.isArray(data)) {
+          setCourses(data);
+          const sorted = [...data].sort((a, b) => b.rating - a.rating);
+          setFeaturedCourses(sorted.slice(0, 6));
+        } else {
+          throw new Error('Invalid data format');
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         

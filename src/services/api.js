@@ -13,8 +13,16 @@ export const fetchCourses = async () => {
   try {
     const randomSubjects = SUBJECTS.sort(() => 0.5 - Math.random()).slice(0, 3);
     const coursePromises = randomSubjects.map(async (subject) => {
-      const response = await fetch(`${BASE_URL}/${subject}.json?limit=5`);
-      return response.json();
+      try {
+        const response = await fetch(`${BASE_URL}/${subject}.json?limit=5`);
+        if (!response.ok) {
+          throw new Error(`API responded with status: ${response.status}`);
+        }
+        return response.json();
+      } catch (error) {
+        console.error(`Error fetching subject ${subject}:`, error);
+        return null;
+      }
     });
 
     const subjectResults = await Promise.all(coursePromises);
@@ -23,24 +31,37 @@ export const fetchCourses = async () => {
     let idCounter = 1;
     
     subjectResults.forEach((result, subjectIndex) => {
-      if (result && result.works) {
-        const subjectName = SUBJECTS[subjectIndex];
+      if (result && result.works && Array.isArray(result.works)) {
+        const subjectName = SUBJECTS[subjectIndex] || 'general';
         
-        const courses = result.works.map((work) => ({
-          id: idCounter++,
-          title: work.title,
-          instructor: work.authors?.[0]?.name || 'Expert Instructor',
-          level: getRandomLevel(),
-          rating: (4 + Math.random()).toFixed(1),
-          image: work.cover_id 
-            ? `https://covers.openlibrary.org/b/id/${work.cover_id}-L.jpg` 
-            : `https://source.unsplash.com/random/800x600/?${subjectName}`,
-          description: work.description?.value || 
-            `Learn all about ${work.title} in this comprehensive course designed for all skill levels. Master key concepts and practical applications.`,
-          duration: `${Math.floor(Math.random() * 10) + 4} weeks`,
-          lessons: generateLessons(work.title, 5),
-          topics: generateTopics(subjectName),
-        }));
+        const courses = result.works.map((work) => {
+          if (!work) return null;
+          
+          const authorName = work.authors && Array.isArray(work.authors) && work.authors.length > 0 && work.authors[0]?.name 
+            ? work.authors[0].name 
+            : 'Expert Instructor';
+            
+          const description = typeof work.description === 'object' && work.description?.value
+            ? work.description.value
+            : typeof work.description === 'string'
+              ? work.description
+              : `Learn all about ${work.title || 'this subject'} in this comprehensive course designed for all skill levels.`;
+          
+          return {
+            id: idCounter++,
+            title: work.title || `Course ${idCounter}`,
+            instructor: authorName,
+            level: getRandomLevel(),
+            rating: (4 + Math.random()).toFixed(1),
+            image: work.cover_id 
+              ? `https://covers.openlibrary.org/b/id/${work.cover_id}-L.jpg` 
+              : `https://source.unsplash.com/random/800x600/?${subjectName}`,
+            description: description,
+            duration: `${Math.floor(Math.random() * 10) + 4} weeks`,
+            lessons: generateLessons(work.title || `Module ${idCounter}`, 5),
+            topics: generateTopics(subjectName),
+          };
+        }).filter(course => course !== null);
         
         transformedCourses = [...transformedCourses, ...courses];
       }
@@ -127,7 +148,7 @@ export const getCoursesWithFallback = async (mockData) => {
   try {
     console.log('Attempting to fetch data from Open Library API...');
     const openLibraryCourses = await fetchCourses();
-    if (openLibraryCourses && openLibraryCourses.length > 0) {
+    if (openLibraryCourses && Array.isArray(openLibraryCourses) && openLibraryCourses.length > 0) {
       console.log('Successfully fetched data from Open Library API.');
       return {
         source: 'openlibrary',
@@ -136,18 +157,22 @@ export const getCoursesWithFallback = async (mockData) => {
     }
     
     console.log('Open Library API failed, trying JSONPlaceholder API...');
-    const jsonPlaceholderCourses = await fetchFromJSONPlaceholder();
-    if (jsonPlaceholderCourses && jsonPlaceholderCourses.length > 0) {
-      console.log('Successfully fetched data from JSONPlaceholder API.');
-      return {
-        source: 'jsonplaceholder',
-        data: jsonPlaceholderCourses
-      };
+    try {
+      const jsonPlaceholderCourses = await fetchFromJSONPlaceholder();
+      if (jsonPlaceholderCourses && Array.isArray(jsonPlaceholderCourses) && jsonPlaceholderCourses.length > 0) {
+        console.log('Successfully fetched data from JSONPlaceholder API.');
+        return {
+          source: 'jsonplaceholder',
+          data: jsonPlaceholderCourses
+        };
+      }
+    } catch (jsonError) {
+      console.error('JSONPlaceholder API error:', jsonError);
     }
     
     console.log('All APIs failed, using mock data...');
-    if (!mockData || mockData.length === 0) {
-      throw new Error('No mock data provided');
+    if (!mockData || !Array.isArray(mockData) || mockData.length === 0) {
+      throw new Error('No mock data provided or invalid format');
     }
     return {
       source: 'mockdata',
@@ -156,7 +181,7 @@ export const getCoursesWithFallback = async (mockData) => {
     };
   } catch (error) {
     console.error('Error in API fallback chain:', error);
-    if (!mockData || mockData.length === 0) {
+    if (!mockData || !Array.isArray(mockData) || mockData.length === 0) {
       return {
         source: 'error',
         data: [],

@@ -31,23 +31,62 @@ const Courses = () => {
         try {
           const response = await getCoursesWithFallback(coursesData);
           
-          if (response.source) {
+          if (response.source && Array.isArray(response.data)) {
             setDataSource(response.source);
             setIsDemo(!!response.isDemo);
             setCourses(response.data);
             setAllCourses(response.data);
             setFilteredCourses(response.data);
             
-            const topics = [...new Set(response.data.flatMap(course => course.topics))];
-            setAllTopics(topics);
-          } else {
-            // For backward compatibility
+            try {
+              const extractTopics = (courseArray) => {
+                const allTopics = [];
+                courseArray.forEach(course => {
+                  if (course && course.topics && Array.isArray(course.topics)) {
+                    course.topics.forEach(topic => {
+                      if (topic && !allTopics.includes(topic)) {
+                        allTopics.push(topic);
+                      }
+                    });
+                  }
+                });
+                return allTopics;
+              };
+              
+              const topics = extractTopics(response.data);
+              setAllTopics(topics);
+            } catch (topicError) {
+              console.error('Error extracting topics:', topicError);
+              setAllTopics([]);
+            }
+          } else if (Array.isArray(response)) {
             setCourses(response);
             setAllCourses(response);
             setFilteredCourses(response);
             
-            const topics = [...new Set(response.flatMap(course => course.topics))];
-            setAllTopics(topics);
+            try {
+              const extractTopics = (courseArray) => {
+                const allTopics = [];
+                courseArray.forEach(course => {
+                  if (course && course.topics && Array.isArray(course.topics)) {
+                    course.topics.forEach(topic => {
+                      if (topic && !allTopics.includes(topic)) {
+                        allTopics.push(topic);
+                      }
+                    });
+                  }
+                });
+                return allTopics;
+              };
+              
+              const topics = extractTopics(response);
+              setAllTopics(topics);
+            } catch (topicError) {
+              console.error('Error extracting topics:', topicError);
+              setAllTopics([]);
+            }
+          } else {
+            throw new Error('Invalid response format');
           }
           
         } catch (error) {
@@ -60,17 +99,60 @@ const Courses = () => {
           setDataSource('mockdata');
           setIsDemo(true);
           
-          const topics = [...new Set(coursesData.flatMap(course => course.topics))];
-          setAllTopics(topics);
+          try {
+            const extractTopics = (courseArray) => {
+              const allTopics = [];
+              courseArray.forEach(course => {
+                if (course && course.topics && Array.isArray(course.topics)) {
+                  course.topics.forEach(topic => {
+                    if (topic && !allTopics.includes(topic)) {
+                      allTopics.push(topic);
+                    }
+                  });
+                }
+              });
+              return allTopics;
+            };
+            
+            const topics = extractTopics(coursesData);
+            setAllTopics(topics);
+          } catch (topicError) {
+            console.error('Error extracting topics:', topicError);
+            setAllTopics([]);
+          }
         } finally {
           setLoading(false);
         }
-      } else {
+      } else if (Array.isArray(courses)) {
         setAllCourses(courses);
         setFilteredCourses(courses);
         
-        const topics = [...new Set(courses.flatMap(course => course.topics))];
-        setAllTopics(topics);
+        try {
+          const extractTopics = (courseArray) => {
+            const allTopics = [];
+            courseArray.forEach(course => {
+              if (course && course.topics && Array.isArray(course.topics)) {
+                course.topics.forEach(topic => {
+                  if (topic && !allTopics.includes(topic)) {
+                    allTopics.push(topic);
+                  }
+                });
+              }
+            });
+            return allTopics;
+          };
+          
+          const topics = extractTopics(courses);
+          setAllTopics(topics);
+        } catch (topicError) {
+          console.error('Error extracting topics:', topicError);
+          setAllTopics([]);
+        }
+        
+        setLoading(false);
+      } else {
+        console.error('Courses is not an array:', courses);
+        setError('Invalid course data format');
         setLoading(false);
       }
     };
@@ -79,34 +161,54 @@ const Courses = () => {
   }, [setCourses, courses]);
   
   useEffect(() => {
-    if (loading || allCourses.length === 0) return;
+    if (loading || !Array.isArray(allCourses) || allCourses.length === 0) return;
     
-    let filtered = [...allCourses];
-    
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(course => 
-        course.title.toLowerCase().includes(searchLower) ||
-        course.description.toLowerCase().includes(searchLower) ||
-        course.instructor.toLowerCase().includes(searchLower) ||
-        course.topics.some(topic => topic.toLowerCase().includes(searchLower))
-      );
+    try {
+      let filtered = [...allCourses];
+      
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        filtered = filtered.filter(course => {
+          if (!course) return false;
+          
+          const titleMatch = course.title && course.title.toLowerCase().includes(searchLower);
+          const descMatch = course.description && course.description.toLowerCase().includes(searchLower);
+          const instructorMatch = course.instructor && course.instructor.toLowerCase().includes(searchLower);
+          
+          let topicMatch = false;
+          if (course.topics && Array.isArray(course.topics)) {
+            topicMatch = course.topics.some(topic => 
+              topic && topic.toLowerCase().includes(searchLower)
+            );
+          }
+          
+          return titleMatch || descMatch || instructorMatch || topicMatch;
+        });
+      }
+      
+      if (selectedLevel) {
+        filtered = filtered.filter(course => course && course.level === selectedLevel);
+      }
+      
+      if (selectedTopic) {
+        filtered = filtered.filter(course => 
+          course && 
+          course.topics && 
+          Array.isArray(course.topics) && 
+          course.topics.includes(selectedTopic)
+        );
+      }
+      
+      setFilteredCourses(filtered);
+      setCurrentPage(1);
+    } catch (error) {
+      console.error('Error filtering courses:', error);
+      setFilteredCourses(allCourses);
     }
-    
-    if (selectedLevel) {
-      filtered = filtered.filter(course => course.level === selectedLevel);
-    }
-    
-    if (selectedTopic) {
-      filtered = filtered.filter(course => course.topics.includes(selectedTopic));
-    }
-    
-    setFilteredCourses(filtered);
-    setCurrentPage(1);
   }, [searchTerm, selectedLevel, selectedTopic, allCourses, loading]);
   
   useEffect(() => {
-    if (filteredCourses.length === 0) {
+    if (!Array.isArray(filteredCourses) || filteredCourses.length === 0) {
       setDisplayedCourses([]);
       return;
     }
@@ -114,12 +216,18 @@ const Courses = () => {
     setPageLoading(true);
 
     const loadPageData = setTimeout(() => {
-      const indexOfLastCourse = currentPage * coursesPerPage;
-      const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-      const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
-      
-      setDisplayedCourses(currentCourses);
-      setPageLoading(false);
+      try {
+        const indexOfLastCourse = currentPage * coursesPerPage;
+        const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+        const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+        
+        setDisplayedCourses(currentCourses);
+      } catch (error) {
+        console.error('Error during pagination:', error);
+        setDisplayedCourses([]);
+      } finally {
+        setPageLoading(false);
+      }
     }, 500);
     
     return () => clearTimeout(loadPageData);
@@ -132,15 +240,20 @@ const Courses = () => {
     setCurrentPage(1);
   };
   
-  const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+  const totalPages = Array.isArray(filteredCourses) 
+    ? Math.ceil(filteredCourses.length / coursesPerPage) 
+    : 0;
   
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     
-    window.scrollTo({
-      top: document.querySelector('#courses-section').offsetTop - 100,
-      behavior: 'smooth'
-    });
+    const coursesSection = document.querySelector('#courses-section');
+    if (coursesSection) {
+      window.scrollTo({
+        top: coursesSection.offsetTop - 100,
+        behavior: 'smooth'
+      });
+    }
   };
   
   return (

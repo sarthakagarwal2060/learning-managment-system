@@ -26,8 +26,15 @@ function App() {
     const fetchCourses = async () => {
       try {
         setLoading(true);
-        const data = await getCoursesWithFallback();
-        setCourses(data);
+        const response = await getCoursesWithFallback(coursesData);
+        
+        if (response && response.source && Array.isArray(response.data)) {
+          setCourses(response.data);
+        } else if (Array.isArray(response)) {
+          setCourses(response);
+        } else {
+          throw new Error('Invalid response format');
+        }
       } catch (err) {
         console.error('Error fetching courses:', err);
         setError('Failed to load courses. Using fallback data.');
