@@ -245,12 +245,6 @@ const Dashboard = () => {
                         className="w-full p-2 border border-gray-300 rounded-md bg-gray-50"
                       />
                     </div>
-                    
-                    <div className="pt-4">
-                      <button className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                        Edit Profile
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>

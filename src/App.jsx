@@ -8,6 +8,7 @@ import CourseDetail from './pages/CourseDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import Dashboard from './pages/Dashboard'
 import { getCoursesWithFallback } from './services/api';
 import { coursesData } from './data/coursesData';
 
@@ -77,6 +78,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/dashboard" element={<Dashboard/>}/>
             </Routes>
           </main>
           <Footer />
